@@ -61,6 +61,9 @@ with mp_face_mesh.FaceMesh(
             center_right = np.array([r_cx, r_cy], dtype=np.int32)
             print(center_left, center_right)
 
+            # Draw cross-hair at the center
+            cv2.drawMarker(frame, (img_w // 2, img_h // 2), (0, 255, 0), markerType=cv2.MARKER_CROSS, markerSize=30, thickness=2, line_type=cv2.LINE_AA)
+
             # eye center loc
             cv2.circle(frame, center_left, 1, (0, 255, 0), 1, cv2.LINE_AA)
             cv2.circle(frame, center_right, 1, (0, 255, 0), 1, cv2.LINE_AA)
@@ -79,6 +82,7 @@ with mp_face_mesh.FaceMesh(
             total_ratio = max(right_ratio, left_ratio) / min(right_ratio, left_ratio)
             print(total_ratio)
 
+            cv2.putText(frame, f"LOOK STRAIGHT AT THE CENTRE", (170, 150), cv2.FONT_HERSHEY_PLAIN, 1.2, (0, 255, 0), 1, cv2.LINE_AA)
             cv2.putText (frame, f"Deviation : {total_ratio:.2f}", (30, 30), cv2.FONT_HERSHEY_PLAIN, 1.2, (0, 0, 255), 1, cv2.LINE_AA)
 
         cv2.imshow("Live", frame)
