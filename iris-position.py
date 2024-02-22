@@ -35,7 +35,7 @@ def iris_position(iris_centre, right_point, left_point):
 with mp_face_mesh.FaceMesh (max_num_faces=1, refine_landmarks=True, min_detection_confidence=0.5,
                             min_tracking_confidence=0.5) as face_mesh:
 
-    frame = cv2.imread("./Images/Strabised/str13.jpg")
+    frame = cv2.imread("./Images/Strabised/str5.jpg")
     # frame = cv2.imread ("./Images/Normal/nr2.jpg")
 
     frame = cv2.resize(frame, (0, 0), None, 0.5, 0.5)
