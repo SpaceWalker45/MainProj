@@ -79,11 +79,11 @@ with mp_face_mesh.FaceMesh(
             cv2.putText(frame, f"Deviation : {total_ratio:.2f}", (30, 30), cv2.FONT_HERSHEY_PLAIN, 1.2, (0, 0, 255), 1, cv2.LINE_AA)
 
             elapsed_time = time.time() - start_time
-        if total_ratio > 1.75 and elapsed_time > 3 and not flag:  # Take screenshot after 3 seconds
+        if total_ratio > 1.7 and elapsed_time > 5 and not flag:  # Take screenshot after 3 seconds
             # Take screenshot and display in another window
             screenshot = frame.copy()
             flag = True
-            cv2.imshow("Screenshot", screenshot)
+            cv2.imshow("LIVE", screenshot)
 
         cv2.imshow("Live", frame)
         key = cv2.waitKey(1)

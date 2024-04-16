@@ -3,6 +3,9 @@ import numpy as np
 import mediapipe as mp
 import math
 
+import tkinter
+from tkinter import filedialog
+
 LEFT_IRIS = [469, 470, 471, 472]
 RIGHT_IRIS = [474, 475, 476, 477]
 LEFT_EYE = [33, 7, 163, 144, 145, 153, 154, 155, 133, 173, 157, 158, 159, 160, 161, 246]
@@ -31,12 +34,17 @@ def iris_position(iris_centre, right_point, left_point):
     ratio2 = center_to_left / center_to_right
     return ratio1, ratio2
 
-
+# def image_work_aku():
 with mp_face_mesh.FaceMesh (max_num_faces=1, refine_landmarks=True, min_detection_confidence=0.5,
                             min_tracking_confidence=0.5) as face_mesh:
+    
 
-    frame = cv2.imread("./Images/Strabised/image-13.jpeg")
-    # frame = cv2.imread ("./Images/Normal/nr2.jpg")
+    tkinter.Tk().withdraw() # prevents an empty tkinter window from appearing
+
+    file_path = filedialog.askopenfile()
+    print("file path : ",file_path.name)
+    
+    frame = cv2.imread(file_path.name)
 
     frame = cv2.resize(frame, (0, 0), None, 0.5, 0.5)
 
@@ -52,6 +60,12 @@ with mp_face_mesh.FaceMesh (max_num_faces=1, refine_landmarks=True, min_detectio
         center_right = np.array([r_cx, r_cy], dtype=np.int32)
         print(center_left, center_right)
 
+        # eye center loc
+        cv2.circle(frame, center_left, 1, (0, 255, 0), 1, cv2.LINE_AA)
+        cv2.circle(frame, center_right, 1, (0, 255, 0), 1, cv2.LINE_AA)
+
+        cv2.circle(frame, center_left, int(l_radius), (255, 255, 255), 1, cv2.LINE_AA)
+        cv2.circle(frame, center_right, int(r_radius), (255, 0, 255), 1, cv2.LINE_AA)
         cv2.circle(frame, mesh_points[L_H_LEFT][0], 2, (255, 255, 255), 1, cv2.LINE_AA)
         cv2.circle(frame, mesh_points[L_H_RIGHT][0], 2, (0, 0, 255), 1, cv2.LINE_AA)
         cv2.circle(frame, mesh_points[R_H_LEFT][0], 2, (255, 255, 255), 1, cv2.LINE_AA)
@@ -65,9 +79,9 @@ with mp_face_mesh.FaceMesh (max_num_faces=1, refine_landmarks=True, min_detectio
         print(f"Total ratio : {total_ratio}")
 
         #cv2.putText(frame, f"Deviation : {total_ratio:.2f}", (30, 30), cv2.FONT_HERSHEY_PLAIN, 1.2, (0, 0, 255), 1, cv2.LINE_AA)
-        cv2.putText(frame, f"LOOK STRAIGHT AT THE CENTRE", (170, 150), cv2.FONT_HERSHEY_PLAIN, 1.2, (0, 255, 0), 1, cv2.LINE_AA)
+        #cv2.putText(frame, f"LOOK STRAIGHT AT THE CENTRE", (170, 150), cv2.FONT_HERSHEY_PLAIN, 1.2, (0, 255, 0), 1, cv2.LINE_AA)
         cv2.putText(frame, f"Deviation : {total_ratio:.2f}", (30, 30), cv2.FONT_HERSHEY_PLAIN, 1.2, (0, 0, 255), 1, cv2.LINE_AA)
-        cv2.drawMarker(frame, (img_w // 2, img_h // 2), (0, 255, 0), markerType=cv2.MARKER_CROSS, markerSize=30, thickness=2, line_type=cv2.LINE_AA)
+        #cv2.drawMarker(frame, (img_w // 2, img_h // 2), (0, 255, 0), markerType=cv2.MARKER_CROSS, markerSize=30, thickness=2, line_type=cv2.LINE_AA)
     cv2.imshow("Frame", frame)
     cv2.waitKey(0)
 
